@@ -263,7 +263,7 @@ workflow DIFFERENTIALABUNDANCE {
             .map{ it.tail() }
             .first()
     }
-    else if { params.package == 'deseq2'
+    else if (params.package == 'deseq2') {
 
         // Run the DESeq differential module, which doesn't take the feature
         // annotations
