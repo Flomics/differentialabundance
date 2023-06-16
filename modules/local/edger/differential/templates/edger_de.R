@@ -382,9 +382,9 @@ normalised_counts <- cpm(count.table)
 # ################################################
 # ################################################
 
-prefix_part_names <- c('contrast_variable', 'reference_level', 'target_level', 'blocking_variables')
-prefix_parts <- unlist(lapply(prefix_part_names, function(x) gsub("[^[:alnum:]]", "_", opt[[x]])))
-output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
+# prefix_part_names <- c('contrast_variable', 'reference_level', 'target_level', 'blocking_variables')
+# prefix_parts <- unlist(lapply(prefix_part_names, function(x) gsub("[^[:alnum:]]", "_", opt[[x]])))
+# output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
 
 # contrast.name <-
 #     paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
@@ -456,7 +456,7 @@ output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
 
 write.table(
     normalised_counts,
-    file = paste(output_prefix, 'normalised_counts.tsv', sep = '.'),
+    file = 'normalised_counts.tsv',
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -496,9 +496,9 @@ write.table(
 # ################################################
 # ################################################
 
-sink(paste(output_prefix, "R_sessionInfo.log", sep = '.'))
-print(sessionInfo())
-sink()
+# sink(paste(output_prefix, "R_sessionInfo.log", sep = '.'))
+# print(sessionInfo())
+# sink()
 
 # ################################################
 # ################################################
@@ -506,16 +506,16 @@ sink()
 # ################################################
 # ################################################
 
-r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
-edger.version <- as.character(packageVersion('edgeR'))
+# r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
+# edger.version <- as.character(packageVersion('edgeR'))
 
-writeLines(
-    c(
-        '"${task.process}":',
-        paste('    r-base:', r.version),
-        paste('    bioconductor-edger:', edger.version)
-    ),
-'versions.yml')
+# writeLines(
+#     c(
+#         '"${task.process}":',
+#         paste('    r-base:', r.version),
+#         paste('    bioconductor-edger:', edger.version)
+#     ),
+# 'versions.yml')
 
 # ################################################
 # ################################################
