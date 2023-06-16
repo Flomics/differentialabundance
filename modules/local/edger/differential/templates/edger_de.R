@@ -310,9 +310,9 @@ for (v in c(blocking.vars, contrast_variable)) {
 # https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
 
 model <- paste(model, contrast_variable, sep = ' + ')
-model
+#model
 #count.table
-sample.sheet
+#sample.sheet
 
 normalised_counts <- cpm(count.table)
 
@@ -330,11 +330,32 @@ normalised_counts <- cpm(count.table)
 #     }
 # }
 
-# dds <- DESeqDataSetFromMatrix(
-#     countData = round(count.table),
-#     colData = sample.sheet,
-#     design = as.formula(model)
-# )
+group <- sample.sheet$condition
+group <- factor(group)
+
+y <- DGEList(
+    counts=count.table,
+    genes=rownames(count.table),
+    group = sample.sheet$condition)
+
+keep <- filterByExpr(y, y$samples$group)
+table(keep)
+y <- y[keep, , keep.lib.sizes=FALSE]
+
+y <- calcNormFactors(y)
+
+design <- model.matrix(~0+y$samples$group)
+colnames(design) <- levels(y$samples$group)
+design
+
+y <- estimateDisp(y, design, robust=TRUE)
+
+fit <- glmQLFit(y, design, robust=TRUE)
+
+contrast_comp <- makeContrasts(target_level-reference_level, levels=design)
+res <- glmQLFTest(fit, contrast=contrast_comp)
+topTags(res)
+
 
 # if (opt\$control_genes_file != '' && opt\$sizefactors_from_controls){
 #     print(paste('Estimating size factors using', length(control_genes), 'control genes'))
