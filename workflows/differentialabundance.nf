@@ -284,8 +284,8 @@ workflow DIFFERENTIALABUNDANCE {
         ch_vst = DESEQ2_DIFFERENTIAL.out.vst_counts.first()
         ch_differential = DESEQ2_DIFFERENTIAL.out.results
 
-        ch_versions = ch_versions
-            .mix(DESEQ2_DIFFERENTIAL.out.versions)
+        // ch_versions = ch_versions
+        //     .mix(DESEQ2_DIFFERENTIAL.out.versions)
 
         ch_processed_matrices = ch_norm
             .join(ch_vst)
