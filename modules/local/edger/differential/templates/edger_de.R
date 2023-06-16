@@ -389,9 +389,9 @@ write.table(
 # ################################################
 # ################################################
 
-# prefix_part_names <- c('contrast_variable', 'reference_level', 'target_level', 'blocking_variables')
-# prefix_parts <- unlist(lapply(prefix_part_names, function(x) gsub("[^[:alnum:]]", "_", opt[[x]])))
-# output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
+prefix_part_names <- c('contrast_variable', 'reference_level', 'target_level', 'blocking_variables')
+prefix_parts <- unlist(lapply(prefix_part_names, function(x) gsub("[^[:alnum:]]", "_", opt[[x]])))
+output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
 
 # contrast.name <-
 #     paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
