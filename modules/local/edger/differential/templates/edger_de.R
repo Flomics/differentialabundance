@@ -169,6 +169,9 @@ for (file_input in c('count_file', 'sample_file')){
 ################################################
 
 library(edgeR)
+r = getOption("repos")
+r["CRAN"] = "http://cran.us.r-project.org"
+options(repos = r)
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
