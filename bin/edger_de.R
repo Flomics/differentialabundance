@@ -18,13 +18,13 @@ metadata <- metadata[metadata$sample %in% names(count_matrix), ]
 head(count_matrix)
 head(metadata)
 
-group <- samplesheet$condition
+group <- metadata$condition
 group <- factor(group)
 
 y <- DGEList(
     counts = count_matrix,
     genes = rownames(count_matrix),
-    group = samplesheet$condition)
+    group = metadata$condition)
 
 keep <- filterByExpr(y, y$samples$group)
 table(keep)
