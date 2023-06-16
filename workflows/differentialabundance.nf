@@ -56,6 +56,7 @@ citations_file = file(params.citations_file, checkIfExists: true)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
+ch_edger_de = file("$baseDir/bin/edger_de.R", checkIfExists: true)
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -295,6 +296,7 @@ workflow DIFFERENTIALABUNDANCE {
         // annotations
 
         EDGER_DIFFERENTIAL (
+            ch_edger_de,
             ch_contrasts,
             ch_samples_and_matrix
         )

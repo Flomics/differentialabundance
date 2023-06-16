@@ -8,6 +8,7 @@ process EDGER_DIFFERENTIAL {
         'quay.io/biocontainers/bioconductor-edger:3.40.0--r42hf17093f_1' }"
 
     input:
+    path(edger)
     tuple val(meta), val(contrast_variable), val(reference), val(target)
     tuple val(meta2), path(samplesheet), path(counts)
 
@@ -27,6 +28,7 @@ process EDGER_DIFFERENTIAL {
 
     script:
     """
-    Rscript edger_de.R $reference $target $samplesheet $counts
+    cp $edger edger.R
+    Rscript edger.R $reference $target $samplesheet $counts
     """
 }
