@@ -310,7 +310,7 @@ workflow DIFFERENTIALABUNDANCE {
         ch_norm = EDGER_DIFFERENTIAL.out.normalised_counts.first()
         //ch_vst = EDGER_DIFFERENTIAL.out.vst_counts.first()
         //ch_differential = EDGER_DIFFERENTIAL.out.results
-        ch_differential = Channel_empty()
+        ch_differential = Channel.empty()
 
         ch_versions = ch_versions
             .mix(EDGER_DIFFERENTIAL.out.versions)
