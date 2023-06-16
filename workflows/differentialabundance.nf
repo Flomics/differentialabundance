@@ -284,8 +284,8 @@ workflow DIFFERENTIALABUNDANCE {
         ch_vst = DESEQ2_DIFFERENTIAL.out.vst_counts.first()
         ch_differential = DESEQ2_DIFFERENTIAL.out.results
 
-        // ch_versions = ch_versions
-        //     .mix(DESEQ2_DIFFERENTIAL.out.versions)
+        ch_versions = ch_versions
+            .mix(DESEQ2_DIFFERENTIAL.out.versions)
 
         ch_processed_matrices = ch_norm
             .join(ch_vst)
@@ -312,8 +312,8 @@ workflow DIFFERENTIALABUNDANCE {
         //ch_differential = EDGER_DIFFERENTIAL.out.results
         ch_differential = Channel.empty()
 
-        ch_versions = ch_versions
-            .mix(EDGER_DIFFERENTIAL.out.versions)
+        // ch_versions = ch_versions
+        //     .mix(EDGER_DIFFERENTIAL.out.versions)
 
         ch_processed_matrices = ch_norm
             // .join(ch_vst)
