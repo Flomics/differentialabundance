@@ -315,14 +315,7 @@ count.table
 sample.sheet
 
 normalised_counts <- cpm(count.table)
-write.table(
-    normalised_counts,
-    file = paste(output_prefix, 'normalised_counts.tsv', sep = '.'),
-    col.names = TRUE,
-    row.names = FALSE,
-    sep = '\t',
-    quote = FALSE
-)
+
 
 ################################################
 ################################################
@@ -458,6 +451,17 @@ output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
 #     sep = '\t',
 #     quote = FALSE
 # )
+
+# # Write specified matrices
+
+write.table(
+    normalised_counts,
+    file = paste(output_prefix, 'normalised_counts.tsv', sep = '.'),
+    col.names = TRUE,
+    row.names = FALSE,
+    sep = '\t',
+    quote = FALSE
+)
 
 # # Note very limited rounding for consistency of results
 
