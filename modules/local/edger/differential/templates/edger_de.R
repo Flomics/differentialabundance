@@ -169,6 +169,10 @@ for (file_input in c('count_file', 'sample_file')){
 ################################################
 
 library(edgeR)
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("BiocParallel")
 library(BiocParallel)
 
 ################################################
