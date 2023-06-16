@@ -296,8 +296,7 @@ workflow DIFFERENTIALABUNDANCE {
 
         EDGER_DIFFERENTIAL (
             ch_contrasts,
-            ch_samples_and_matrix,
-            ch_control_features
+            ch_samples_and_matrix
         )
 
         // Let's make the simplifying assumption that the processed matrices from

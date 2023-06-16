@@ -10,7 +10,6 @@ process EDGER_DIFFERENTIAL {
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target)
     tuple val(meta2), path(samplesheet), path(counts)
-    tuple val(control_genes_meta), path(control_genes_file)
 
     output:
     // tuple val(meta), path("*.edger.results.tsv")              , emit: results
@@ -27,5 +26,7 @@ process EDGER_DIFFERENTIAL {
     task.ext.when == null || task.ext.when
 
     script:
-    template 'edger_de.R'
+    """
+    Rscript edger_de.R $reference $target $samplesheet $counts
+    """
 }
