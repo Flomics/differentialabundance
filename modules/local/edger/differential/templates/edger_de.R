@@ -186,32 +186,32 @@ library(BiocParallel)
 
 count.table <-
     read_delim_flexible(
-        file = opt$count_file,
+        file = opt\$count_file,
         header = TRUE,
-        row.names = opt$gene_id_col,
+        row.names = opt\$gene_id_col,
         check.names = FALSE
     )
-sample.sheet <- read_delim_flexible(file = opt$sample_file)
+sample.sheet <- read_delim_flexible(file = opt\$sample_file)
 
 # Deal with spaces that may be in sample column
-opt$sample_id_col <- make.names(opt$sample_id_col)
+opt\$sample_id_col <- make.names(opt\$sample_id_col)
 
-if (! opt$sample_id_col %in% colnames(sample.sheet)){
-    stop(paste0("Specified sample ID column '", opt$sample_id_col, "' is not in the sample sheet"))
+if (! opt\$sample_id_col %in% colnames(sample.sheet)){
+    stop(paste0("Specified sample ID column '", opt\$sample_id_col, "' is not in the sample sheet"))
 }
 
 # Sample sheet can have duplicate rows for multiple sequencing runs, so uniqify
 # before assigning row names
 
-sample.sheet <- sample.sheet[! duplicated(sample.sheet[[opt$sample_id_col]]), ]
-rownames(sample.sheet) <- sample.sheet[[opt$sample_id_col]]
+sample.sheet <- sample.sheet[! duplicated(sample.sheet[[opt\$sample_id_col]]), ]
+rownames(sample.sheet) <- sample.sheet[[opt\$sample_id_col]]
 
 # Check that all samples specified in the input sheet are present in the counts
 # table. Assuming they are, subset and sort the count table to match the sample
 # sheet
 
 missing_samples <-
-    sample.sheet[!rownames(sample.sheet) %in% colnames(count.table), opt$sample_id_col]
+    sample.sheet[!rownames(sample.sheet) %in% colnames(count.table), opt\$sample_id_col]
 
 if (length(missing_samples) > 0) {
     stop(paste(
@@ -232,7 +232,7 @@ if (length(missing_samples) > 0) {
 ################################################
 ################################################
 
-contrast_variable <- make.names(opt$contrast_variable)
+contrast_variable <- make.names(opt\$contrast_variable)
 blocking.vars <- c()
 
 if (!contrast_variable %in% colnames(sample.sheet)) {
@@ -243,7 +243,7 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
         '\" not in sample sheet'
         )
     )
-} else if (any(!c(opt$reflevel, opt$treatlevel) %in% sample.sheet[[contrast_variable]])) {
+} else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[contrast_variable]])) {
     stop(
         paste(
         'Please choose reference and treatment levels that are present in the',
@@ -251,8 +251,8 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
         'column of the sample sheet'
         )
     )
-} else if (!is.null(opt$blocking_variables)) {
-    blocking.vars = make.names(unlist(strsplit(opt$blocking_variables, split = ';')))
+} else if (!is.null(opt\$blocking_variables)) {
+    blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
     if (!all(blocking.vars %in% colnames(sample.sheet))) {
         missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
         stop(
@@ -266,9 +266,9 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
 
 # Optionally, subset to only the samples involved in the contrast
 
-if (opt$subset_to_contrast_samples){
-    sample_selector <- sample.sheet[[contrast_variable]] %in% c(opt$target_level, opt$reference_level)
-    selected_samples <- sample.sheet[sample_selector, opt$sample_id_col]
+if (opt\$subset_to_contrast_samples){
+    sample_selector <- sample.sheet[[contrast_variable]] %in% c(opt\$target_level, opt\$reference_level)
+    selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
     count.table <- count.table[, selected_samples]
     sample.sheet <- sample.sheet[selected_samples, ]
 }
@@ -276,17 +276,17 @@ if (opt$subset_to_contrast_samples){
 # Optionally, remove samples with specified values in a given field (probably
 # don't use this as well as the above)
 
-if ((! is.null(opt$exclude_samples_col)) && (! is.null(opt$exclude_samples_values))){
-    exclude_values = unlist(strsplit(opt$exclude_samples_values, split = ';'))
+if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_values))){
+    exclude_values = unlist(strsplit(opt\$exclude_samples_values, split = ';'))
 
-    if (! opt$exclude_samples_col %in% colnames(sample.sheet)){
-        stop(paste(opt$exclude_samples_col, ' specified to subset samples is not a valid sample sheet column'))
+    if (! opt\$exclude_samples_col %in% colnames(sample.sheet)){
+        stop(paste(opt\$exclude_samples_col, ' specified to subset samples is not a valid sample sheet column'))
     }
 
-    print(paste0('Excluding samples with values of ', opt$exclude_samples_values, ' in ', opt$exclude_samples_col))
-    sample_selector <- ! sample.sheet[[opt$exclude_samples_col]] %in% exclude_values
+    print(paste0('Excluding samples with values of ', opt\$exclude_samples_values, ' in ', opt\$exclude_samples_col))
+    sample_selector <- ! sample.sheet[[opt\$exclude_samples_col]] %in% exclude_values
 
-    selected_samples <- sample.sheet[sample_selector, opt$sample_id_col]
+    selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
     count.table <- count.table[, selected_samples]
     sample.sheet <- sample.sheet[selected_samples, ]
 }
@@ -296,7 +296,7 @@ if ((! is.null(opt$exclude_samples_col)) && (! is.null(opt$exclude_samples_value
 
 model <- '~ 0'
 
-if (!is.null(opt$blocking_variables)) {
+if (!is.null(opt\$blocking_variables)) {
     model <- paste(model, paste(blocking.vars, collapse = '+'))
 }
 
@@ -319,13 +319,13 @@ normalised_counts <- cpm(count.table)
 
 ################################################
 ################################################
-## Run DESeq2 processes                       ##
+## Run edgeR processes                       ##
 ################################################
 ################################################
 
-# if (opt$control_genes_file != ''){
-#     control_genes <- readLines(opt$control_genes_file)
-#     if (! opt$sizefactors_from_controls){
+# if (opt\$control_genes_file != ''){
+#     control_genes <- readLines(opt\$control_genes_file)
+#     if (! opt\$sizefactors_from_controls){
 #         count.table <- count.table[setdiff(rownames(count.table), control_genes),]
 #     }
 # }
@@ -336,42 +336,42 @@ normalised_counts <- cpm(count.table)
 #     design = as.formula(model)
 # )
 
-# if (opt$control_genes_file != '' && opt$sizefactors_from_controls){
+# if (opt\$control_genes_file != '' && opt\$sizefactors_from_controls){
 #     print(paste('Estimating size factors using', length(control_genes), 'control genes'))
 #     dds <- estimateSizeFactors(dds, controlGenes=rownames(count.table) %in% control_genes)
 # }
 
 # dds <- DESeq(
 #     dds,
-#     test = opt$test,
-#     fitType = opt$fit_type,
-#     minReplicatesForReplace = opt$min_replicates_for_replace,
-#     useT = opt$use_t,
-#     sfType = opt$sf_type,
-#     parallel=TRUE, BPPARAM=MulticoreParam(opt$cores)
+#     test = opt\$test,
+#     fitType = opt\$fit_type,
+#     minReplicatesForReplace = opt\$min_replicates_for_replace,
+#     useT = opt\$use_t,
+#     sfType = opt\$sf_type,
+#     parallel=TRUE, BPPARAM=MulticoreParam(opt\$cores)
 # )
 
 # comp.results <-
 #     results(
 #         dds,
-#         lfcThreshold = opt$lfc_threshold,
-#         altHypothesis = opt$alt_hypothesis,
-#         independentFiltering = opt$independent_filtering,
-#         alpha = opt$alpha,
-#         pAdjustMethod = opt$p_adjust_method,
-#         minmu = opt$minmu,
+#         lfcThreshold = opt\$lfc_threshold,
+#         altHypothesis = opt\$alt_hypothesis,
+#         independentFiltering = opt\$independent_filtering,
+#         alpha = opt\$alpha,
+#         pAdjustMethod = opt\$p_adjust_method,
+#         minmu = opt\$minmu,
 #         contrast = c(
 #             contrast_variable,
-#             c(opt$target_level, opt$reference_level)
+#             c(opt\$target_level, opt\$reference_level)
 #         )
 #     )
 
-# if (opt$shrink_lfc){
+# if (opt\$shrink_lfc){
 #     comp.results <- lfcShrink(dds,
 #         type = 'ashr',
 #         contrast = c(
 #             contrast_variable,
-#             c(opt$target_level, opt$reference_level)
+#             c(opt\$target_level, opt\$reference_level)
 #         )
 #     )
 # }
@@ -387,7 +387,7 @@ prefix_parts <- unlist(lapply(prefix_part_names, function(x) gsub("[^[:alnum:]]"
 output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
 
 # contrast.name <-
-#     paste(opt$target_level, opt$reference_level, sep = "_vs_")
+#     paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
 # cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
 # # Differential expression table- note very limited rounding for consistency of
@@ -465,11 +465,11 @@ write.table(
 
 # # Note very limited rounding for consistency of results
 
-# for (vs_method_name in strsplit(opt$vs_method, ',')){
+# for (vs_method_name in strsplit(opt\$vs_method, ',')){
 #     if (vs_method_name == 'vst'){
-#         vs_mat <- vst(dds, blind = opt$vs_blind, nsub = opt$vst_nsub)
+#         vs_mat <- vst(dds, blind = opt\$vs_blind, nsub = opt\$vst_nsub)
 #     }else if (vs_method_name == 'rlog'){
-#         vs_mat <- rlog(dds, blind = opt$vs_blind, fitType = opt$fit_type)
+#         vs_mat <- rlog(dds, blind = opt\$vs_blind, fitType = opt\$fit_type)
 #     }
 
 #     # Again apply the slight rounding and then restore numeric
