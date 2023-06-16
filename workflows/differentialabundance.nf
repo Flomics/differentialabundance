@@ -308,7 +308,8 @@ workflow DIFFERENTIALABUNDANCE {
         // blocking factors included differ. But the normalised and
         // variance-stabilised matrices are not (IIUC) impacted by the model.
 
-        ch_norm = EDGER_DIFFERENTIAL.out.normalised_counts.first()
+        //ch_norm = EDGER_DIFFERENTIAL.out.normalised_counts.first()
+        ch_norm = Channel.empty()
         //ch_vst = EDGER_DIFFERENTIAL.out.vst_counts.first()
         //ch_differential = EDGER_DIFFERENTIAL.out.results
         ch_differential = Channel.empty()
