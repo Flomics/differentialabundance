@@ -308,15 +308,16 @@ workflow DIFFERENTIALABUNDANCE {
         // variance-stabilised matrices are not (IIUC) impacted by the model.
 
         ch_norm = EDGER_DIFFERENTIAL.out.normalised_counts.first()
-        ch_vst = EDGER_DIFFERENTIAL.out.vst_counts.first()
-        ch_differential = EDGER_DIFFERENTIAL.out.results
+        //ch_vst = EDGER_DIFFERENTIAL.out.vst_counts.first()
+        //ch_differential = EDGER_DIFFERENTIAL.out.results
+        ch_differential = Channel_empty()
 
         ch_versions = ch_versions
             .mix(EDGER_DIFFERENTIAL.out.versions)
 
         ch_processed_matrices = ch_norm
-            .join(ch_vst)
-            .map{ it.tail() }
+            // .join(ch_vst)
+            // .map{ it.tail() }
     }
 
     // Run a gene set analysis where directed
@@ -406,7 +407,7 @@ workflow DIFFERENTIALABUNDANCE {
             .combine(ch_all_matrices.map{ it.tail() })
     )
 
-    // Differential analysis using the results of DESeq2
+    // Differential analysis using the results of DE
 
     PLOT_DIFFERENTIAL(
         ch_differential,

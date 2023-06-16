@@ -307,6 +307,16 @@ model
 count.table
 sample.sheet
 
+normalised_counts <- cpm(count.table)
+write.table(
+    normalised_counts,
+    file = paste(output_prefix, 'normalised_counts.tsv', sep = '.'),
+    col.names = TRUE,
+    row.names = FALSE,
+    sep = '\t',
+    quote = FALSE
+)
+
 ################################################
 ################################################
 ## Run DESeq2 processes                       ##
@@ -485,16 +495,16 @@ sample.sheet
 # ################################################
 # ################################################
 
-# r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
-# deseq2.version <- as.character(packageVersion('DESeq2'))
+r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
+edger.version <- as.character(packageVersion('edgeR'))
 
-# writeLines(
-#     c(
-#         '"${task.process}":',
-#         paste('    r-base:', r.version),
-#         paste('    bioconductor-deseq2:', deseq2.version)
-#     ),
-# 'versions.yml')
+writeLines(
+    c(
+        '"${task.process}":',
+        paste('    r-base:', r.version),
+        paste('    bioconductor-edger:', edger.version)
+    ),
+'versions.yml')
 
 # ################################################
 # ################################################
