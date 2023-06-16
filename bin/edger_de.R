@@ -9,9 +9,9 @@ target <- args[2]
 samplesheet <- args[3]
 counts <- args[4]
 
-count_matrix <- read.table(counts, header = TRUE, sep = ",", row.names = 1)
+count_matrix <- read.table(counts, header = TRUE, sep = "\t", row.names = 1)
 
-metadata <- read.table(samplesheet, header = TRUE, sep = ",")
+metadata <- read.table(samplesheet, header = TRUE, sep = "\t")
 # count_matrix <- count_matrix[, names(count_matrix) %in% metadata$sample]
 # metadata <- metadata[metadata$sample %in% names(count_matrix), ]
 
