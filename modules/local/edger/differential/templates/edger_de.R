@@ -311,7 +311,7 @@ for (v in c(blocking.vars, contrast_variable)) {
 
 model <- paste(model, contrast_variable, sep = ' + ')
 model
-count.table
+#count.table
 sample.sheet
 
 normalised_counts <- cpm(count.table)
@@ -452,7 +452,7 @@ output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
 #     quote = FALSE
 # )
 
-# # Write specified matrices
+# Write specified matrices
 
 write.table(
     normalised_counts,
@@ -496,9 +496,9 @@ write.table(
 # ################################################
 # ################################################
 
-# sink(paste(output_prefix, "R_sessionInfo.log", sep = '.'))
-# print(sessionInfo())
-# sink()
+sink(paste(output_prefix, "R_sessionInfo.log", sep = '.'))
+print(sessionInfo())
+sink()
 
 # ################################################
 # ################################################
