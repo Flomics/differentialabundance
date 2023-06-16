@@ -102,7 +102,7 @@ opt <- list(
     control_genes_file = '$control_genes_file',
     sizefactors_from_controls = FALSE,
     gene_id_col = "gene_id",
-    sample_id_col = "experiment_accession",
+    sample_id_col = "sample",
     subset_to_contrast_samples = FALSE,
     exclude_samples_col = NULL,
     exclude_samples_values = NULL,
