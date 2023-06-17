@@ -41,10 +41,12 @@ design
 y <- estimateDisp(y, design, robust = TRUE)
 
 fit <- glmQLFit(y, design, robust = TRUE)
+target
+reference
 
-contrast_comp <- makeContrasts(target - reference, levels = design)
-res <- glmQLFTest(fit, contrast = contrast_comp)
-topTags(res)
+# contrast_comp <- makeContrasts(target - reference, levels = design)
+# res <- glmQLFTest(fit, contrast = contrast_comp)
+# topTags(res)
 
 
 # ################################################
