@@ -1,6 +1,9 @@
 #!/usr/bin/env Rscript
 
 library(edgeR)
+r = getOption("repos")
+r["CRAN"] = "http://cran.us.r-project.org"
+options(repos = r)
 install.packages("statmod")
 library(statmod)
 
