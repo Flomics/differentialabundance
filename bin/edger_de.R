@@ -1,6 +1,8 @@
 #!/usr/bin/env Rscript
 
 library(edgeR)
+install.packages("statmod")
+library(statmod)
 
 args <- commandArgs(trailingOnly = TRUE)
 
@@ -14,9 +16,6 @@ count_matrix <- read.table(counts, header = TRUE, sep = "\t", row.names = 1)
 metadata <- read.table(samplesheet, header = TRUE, sep = "\t")
 count_matrix <- count_matrix[, names(count_matrix) %in% metadata$sample]
 metadata <- metadata[metadata$sample %in% names(count_matrix), ]
-
-head(count_matrix)
-head(metadata)
 
 group <- metadata$condition
 group <- factor(group)
